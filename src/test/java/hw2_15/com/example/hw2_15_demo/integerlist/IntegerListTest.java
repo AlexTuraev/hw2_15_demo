@@ -5,8 +5,12 @@ import hw2_15.com.example.hw2_15_demo.exceptions.OutOfArrayException;
 import hw2_15.com.example.hw2_15_demo.exceptions.OverflowArrayException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class IntegerListTest {
 
     private IntegerList integerList = new IntegerListImpl(5);
+    static Integer [] sortArray;
 
     @BeforeEach
     private void generateStartCondition() {
@@ -119,4 +124,31 @@ class IntegerListTest {
     void toArray() {
 
     }*/
+
+    @ParameterizedTest
+    @MethodSource("generateArrayForSort")
+    void sortBubble(Integer [] arr, Integer [] expected) {
+        assertThat(IntegerList.sortBubble(arr)).isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateArrayForSort")
+    void sortSelection(Integer [] arr, Integer [] expected) {
+        assertThat(IntegerList.sortSelection(arr)).isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateArrayForSort")
+    void sortInsertion(Integer [] arr, Integer [] expected) {
+        assertThat(IntegerList.sortInsertion(arr)).isEqualTo(expected);
+    }
+
+
+    public static Stream<Arguments> generateArrayForSort() {
+        return Stream.of(
+                Arguments.of(new Integer[]{1, 3, 6, 2, 0, 10, 15, 20}, new Integer[]{0, 1, 2, 3, 6, 10, 15, 20}),
+                Arguments.of(new Integer[]{2, 4, 50, 20}, new Integer[]{2, 4, 20, 50}),
+                Arguments.of(new Integer[]{7, 10, 25, 70, 10, 20}, new Integer[]{7, 10, 10, 20, 25, 70})
+        );
+    }
 }

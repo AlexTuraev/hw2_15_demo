@@ -135,27 +135,32 @@ public class IntegerListImpl implements IntegerList{
 
     @Override
     public boolean contains(Integer item) {
-        if (indexOf(item) == -1) {
+       /* if (indexOf(item) == -1) {
             return false;
         }else {
             return true;
+        }*/
+        Integer [] arr = IntegerList.sortSelection(toArray()); // toArray(), чтобы передать с актуальным размером массив, где есть элементы
+
+        //IntegerList.staticPrintArray(arr);
+        int index = Arrays.binarySearch(arr, item);
+        if (index >= 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 
     @Override
     public int indexOf(Integer item) {
-        /*int index = -1;
+        int index = -1;
         for (int i=0; i < countElements; i++) {
             if (array[i].equals(item)) {
                 index = i;
                 break;
             }
         }
-        return index; // -1, если не найдена строка item, или index найденного элемента*/
-
-        Integer [] arr = IntegerList.sortSelection(array);
-        return Arrays.binarySearch(arr, item);
-
+        return index; // -1, если не найдена строка item, или index найденного элемента
     }
 
     @Override

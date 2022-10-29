@@ -114,6 +114,7 @@ public interface IntegerList {
 
     // Сортировка методом пузырька
     public static Integer [] sortBubble(Integer [] arrForSort) {
+        System.out.println("Старт сортировки sortBubble. Идет сортировка...");
         Integer [] arr = Arrays.copyOf(arrForSort, arrForSort.length);
         for (int i = 0; i < arr.length-2; i++) {
             for(int j=0; j < arr.length-1-i; j++){
@@ -128,6 +129,7 @@ public interface IntegerList {
 
     // Сортировка выбором
     public static Integer[] sortSelection(Integer[] arrForSort) {
+        System.out.println("Старт сортировки sortSelection. Идет сортировка...");
         Integer [] arr = Arrays.copyOf(arrForSort, arrForSort.length);
         for (int i = 0; i < arr.length - 1; i++) {
             int minElementIndex = i;
@@ -144,6 +146,7 @@ public interface IntegerList {
 
     // Сортировка вставкой
     public static Integer[] sortInsertion(Integer[] arrForSort) {
+        System.out.println("Старт сортировки sortInsertion. Идет сортировка...");
         Integer [] arr = Arrays.copyOf(arrForSort, arrForSort.length);
         for (int i = 1; i < arr.length; i++) {
             int temp = arr[i];
