@@ -89,6 +89,8 @@ public interface IntegerList {
     Integer removeByValue(Integer item);
     Integer removeByIndex(int index);
 
+    public int getMaxSize();
+
     // Заполнение массива случайными элементами
     public static IntegerList generateRandomArray(int size){
         java.util.Random random = new java.util.Random();
@@ -159,5 +161,40 @@ public interface IntegerList {
         }
         return arr;
     }
+
+    // ------------------------------ StartOf Быстрая сортировка
+    /*private static void swapElements(Integer[] arr, int left, int right) {
+        int temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+    }*/
+
+    public static Integer[] quickSort(Integer[] arr, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(arr, begin, end);
+
+            quickSort(arr, begin, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, end);
+        }
+        return arr;
+    }
+
+    private static int partition(Integer[] arr, int begin, int end) {
+        int pivot = arr[end];
+        int i = (begin - 1);
+
+        for (int j = begin; j < end; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+
+                swapElements(arr, i, j);
+            }
+        }
+
+        swapElements(arr, i + 1, end);
+        return i + 1;
+    }
+    // ------------------------------ EndOf Быстрая сортировка
+
 
 }

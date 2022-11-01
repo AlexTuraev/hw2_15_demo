@@ -8,12 +8,12 @@ import hw2_15.com.example.hw2_15_demo.exceptions.OverflowArrayException;
 import java.util.Arrays;
 
 public class IntegerListImpl implements IntegerList{
-    private int maxSize; // емкость массива максимальная
+    private int maxSize; // емкость массива максимальная, до которой можно доавлять элементы
 
     private final int COUNT_100_000 = 100_000;
-    private int countElements=0; // текущая длина массива
+    private int countElements=0; // текущая длина массива, заполненная добавленными элементами
 
-    private Integer[] array;
+    private Integer[] array; // массив на базе которого построен наш расширенный "массив"
     private final int DEFAULT_SIZE = 100; // максимальный размер массива по умолчанию
 
     public IntegerListImpl() {
@@ -26,8 +26,13 @@ public class IntegerListImpl implements IntegerList{
         generateArray(maxSize);
     }
 
+    // Создает массив размера size в поле array класса
     private void generateArray(int size) {
         array = new Integer[size];
+    }
+
+    public int getMaxSize() {
+        return maxSize;
     }
 
     private boolean testOverflowArray() {
@@ -39,13 +44,17 @@ public class IntegerListImpl implements IntegerList{
     }
 
     // расширение размера массива с переносом элементов
-    private void expandArraySize() {
-        int oldMaxSize = maxSize;
-        maxSize *= 2;
-        Integer [] newArray = new Integer[maxSize];
-        newArray = Arrays.copyOf(array, oldMaxSize);
-        this.array = new Integer[maxSize];
-        this.array = newArray;
+    private void grow() {
+        Integer [] tempArray = Arrays.copyOf(array, countElements);
+        if(maxSize * (double)1.5 > Integer.MAX_VALUE){
+            throw new OverflowArrayException("Нельзя расширить массив");
+        }
+
+        maxSize = (int)Math.round(maxSize * 1.5);
+        generateArray(maxSize);
+        for (int i = 0; i < countElements; i++) {
+            array[i] = tempArray[i];
+        }
     }
 
     public void printArray() {
@@ -83,7 +92,8 @@ public class IntegerListImpl implements IntegerList{
             throw new NullParameterException("Параметр не должен быть равен null");
         }
         if (testOverflowArray()) {
-            throw new OverflowArrayException("Переполнение при попытке добавить элемент");
+            //throw new OverflowArrayException("Переполнение при попытке добавить элемент");
+            grow(); // расширить массив
         }
         array[countElements] = item;
         countElements++;
@@ -93,7 +103,8 @@ public class IntegerListImpl implements IntegerList{
     @Override
     public Integer add(int index, Integer item) {
         if (testOverflowArray()) {
-            throw new OverflowArrayException("Переполнение при попытке вставить элемент по индексу "+index);
+            //throw new OverflowArrayException("Переполнение при попытке вставить элемент по индексу "+index);
+            grow(); // расширить массив
         }
         countElements++;
         for (int i = countElements-1; i > index; i--) {
@@ -140,7 +151,8 @@ public class IntegerListImpl implements IntegerList{
         }else {
             return true;
         }*/
-        Integer [] arr = IntegerList.sortSelection(toArray()); // toArray(), чтобы передать с актуальным размером массив, где есть элементы
+        //Integer [] arr = IntegerList.sortSelection(toArray()); // toArray(), чтобы передать с актуальным размером массив, где есть элементы
+        Integer [] arr = IntegerList.quickSort(toArray(), 0, countElements-1); // toArray(), чтобы передать с актуальным размером массив, где есть элементы
 
         //IntegerList.staticPrintArray(arr);
         int index = Arrays.binarySearch(arr, item);

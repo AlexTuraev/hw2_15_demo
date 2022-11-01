@@ -29,12 +29,12 @@ class IntegerListTest {
         integerList.add(4);
     }
 
-    @Test
+    /*@Test
     void add() {
         assertThrows(NullParameterException.class, ()-> integerList.add(null));
         assertEquals(5, integerList.add(5));
         assertThrows(OverflowArrayException.class, ()->integerList.add(6));
-    }
+    }*/
 
     @Test
     void testAdd() {
